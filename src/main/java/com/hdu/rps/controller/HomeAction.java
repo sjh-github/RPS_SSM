@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 
 /**
  * Created by SJH on 2017/11/10.
+ * @author SJH
+ * 进入系统
  */
 @Controller
 public class HomeAction {
@@ -18,6 +20,14 @@ public class HomeAction {
     private Logger logger = Logger.getLogger(String.valueOf(HomeAction.this));
     private int userID = 0;
     private String job;
+
+    /**
+     * 进入系统，检测是否登陆
+     * @param response
+     * @param request
+     * @param modelMap
+     * @return
+     */
     @RequestMapping("/home")
     public String home(HttpServletResponse response, HttpServletRequest request, ModelMap modelMap) {
         response.setHeader("Cache-Control","no-cache"); //不对页面进行缓存，再次访问时将从服务器重新获取最新版本

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{../style.css}" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{../jquery.step.css}" href="../local/jquery.step.css">
+    <script th:src="@{../jquery-treat.js}" src="../js/jquery-treat.js"></script>
+    <script th:src="@{../jquery.step.js}" src="../js/jquery.step.js"></script>
+</head>
+<body>
+<div class="step-body" id="myStep">
+    <div class="step-header" style="width:80%">
+        <li><p>初步筛选</p></li>
+        <li><p>一面</p></li>
+        <li><p>二面</p></li>
+        <li><p>三面</p></li>
+        <li><p>发放offer</p></li>
+        <li><p>成功入职</p></li>
+    </ul>
+</div>
+<div class="step-content">
+    <div class="step-list">
+    <div class="butModel">
+        <button class="nextBtn">下一步</button>
+    </div>
+</div>
+    <div class="step-list">
+        <div class="butModel">
+            <button class="preBtn">上一步</button>
+            <button class="nextBtn">下一步</button>
+        </div>
+    </div>
+    <div class="step-list">
+        <div class="butModel">
+            <button class="preBtn">上一步</button>
+            <button class="nextBtn">下一步</button>
+        </div>
+    </div>
+    <div class="step-list">
+        <div class="butModel">
+            <button class="preBtn">上一步</button>
+            <button class="nextBtn">下一步</button>
+        </div>
+    </div>
+    <div class="step-list">
+        <div class="butModel">
+            <button class="preBtn">上一步</button>
+            <button class="nextBtn">下一步</button>
+        </div>
+    </div>
+    <div class="step-list">
+        <div class="butModel">
+            <button class="preBtn">上一步</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--<div class="container">
+    <div class="team-members row">
+        <div class="single-member effect-2">
+            <div class="member-image">
+                <img th:src="@{../HR.png}" src="../static/HR.png" alt="Member">//这里是每个人的头像
+            </div>
+            <div class="member-info">
+                <h3>石佳豪</h3>
+                <h5>软件工程</h5>
+                <div class="social-touch" >
+                    <a class="tweet-touch" th:href="@{/hr/addResume}" href="../templates/addResume.html">详细信息</a>
+                </div>
+                <div>
+                    <label>
+                        <div style="float:left;">
+                            <input type="submit" class="button1"  value="不通过" name="btn"/>
+                        </div>
+                    </label>
+                    <label>
+                        <div style="float:right;">
+                            <input type="submit" class="button2"  value="通过" name="btn"/>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+</body>
+</html>

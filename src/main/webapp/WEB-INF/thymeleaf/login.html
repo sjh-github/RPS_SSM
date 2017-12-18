@@ -14,6 +14,12 @@
     <link th:href="@{../css/sb-admin-2.css}" href="../css/sb-admin-2.css" rel="stylesheet"/>
     <!-- Custom Fonts -->
     <link th:href="@{../css/font-awesome.min.css}" href="../css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <script th:if="${result eq '-1'}">
+        alert("该用户不存在");
+    </script>
+    <script th:if="${result eq '-2'}">
+        alert("密码错误");
+    </script>
 </head>
 <body th:background="@{../images/background.jpg}" background="../images/background.jpg">
 <div class="container">
@@ -24,7 +30,7 @@
                     <h2 align="center">人才推荐系统</h2>
                 </div>
                 <div class="panel-body">
-                    <form role="form" th:action="@{/login/{job}(job=${job})}" action="/WEB-INF/thymeleaf/home.html" method="post">
+                    <form role="form" th:action="@{/login/{job}(job=${job})}" action="home.html" method="post">
                         <fieldset>
                             <div class="form-group">
                                 <p>账号：</p> <input class="form-control" placeholder="手机号/邮箱" name="email" type="email" autofocus="" required="required"/>
@@ -35,9 +41,6 @@
                             <div class="checkbox">
                                 <label>
                                     <input name="remember" type="checkbox" value="Remember Me"/>Remember Me
-                                </label>
-                                <label>
-                                    <h4 th:text="${errorTip}">账户名或密码错误</h4>
                                 </label>
                             </div>
                             <!-- Change this to a button or input when using this as a form -->

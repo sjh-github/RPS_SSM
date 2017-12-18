@@ -279,28 +279,28 @@ public class ADServiceImpl implements ADSercive {
            /* new Thread(new Runnable() {
                 @Override
                 public void run() {*/
-                    logger.info("/////////////文件不空////////////");
-                    try {
-                        oldFileName = recommendedPersonMapper.selectByPrimaryKey(rdpno).getRdpphoto();
-                        oldFile = new File(basePhotoPath + "/" + oldFileName);
-                        if(oldFile.exists()) {
-                           oldFile.delete();
-                        }
-                        pointIndex = newfile.getOriginalFilename().lastIndexOf('.');
-                        fileLastName = newfile.getOriginalFilename().substring(pointIndex,newfile.getOriginalFilename().length());
-                        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(
-                                new FileOutputStream(new File(basePhotoPath + "/" + email + fileLastName)));
-                        bufferedOutputStream.write(newfile.getBytes());
-                        bufferedOutputStream.flush();
-                        bufferedOutputStream.close();
-                        recommendedPerson.setRdpphoto(email + fileLastName);
-                    } catch (FileNotFoundException e) {
-                        logger.warning("------------上传照片失败1------------");
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        logger.warning("------------上传照片失败2------------");
-                        e.printStackTrace();
-                    }
+            logger.info("/////////////文件不空////////////");
+            try {
+                oldFileName = recommendedPersonMapper.selectByPrimaryKey(rdpno).getRdpphoto();
+                oldFile = new File(basePhotoPath + "/" + oldFileName);
+                if(oldFile.exists()) {
+                    oldFile.delete();
+                }
+                pointIndex = newfile.getOriginalFilename().lastIndexOf('.');
+                fileLastName = newfile.getOriginalFilename().substring(pointIndex,newfile.getOriginalFilename().length());
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(
+                        new FileOutputStream(new File(basePhotoPath + "/" + email + fileLastName)));
+                bufferedOutputStream.write(newfile.getBytes());
+                bufferedOutputStream.flush();
+                bufferedOutputStream.close();
+                recommendedPerson.setRdpphoto(email + fileLastName);
+            } catch (FileNotFoundException e) {
+                logger.warning("------------上传照片失败1------------");
+                e.printStackTrace();
+            } catch (IOException e) {
+                logger.warning("------------上传照片失败2------------");
+                e.printStackTrace();
+            }
              /*   }
             }).start();*/
         } else {
@@ -324,7 +324,7 @@ public class ADServiceImpl implements ADSercive {
     public void userManageEditSubmit(int rdpno, String name, String phone, String email, String password, String sex, String score) {
         user = userMapper.selectByPrimaryKey(rdpno);
         user.setUsername(name);
-        user.setUserphone(Integer.parseInt(phone));
+        user.setUserphone(phone);
         user.setUseremail(email);
         user.setUserpassword(password);
         if(sex.equals("男")) {
@@ -343,7 +343,7 @@ public class ADServiceImpl implements ADSercive {
     public void hrManageEditSubmit(int rdpno, String name, String phone, String email, String password, String sex) {
         user = userMapper.selectByPrimaryKey(rdpno);
         user.setUsername(name);
-        user.setUserphone(Integer.parseInt(phone));
+        user.setUserphone((phone));
         user.setUseremail(email);
         user.setUserpassword(password);
         if(sex.equals("男")) {
@@ -361,7 +361,7 @@ public class ADServiceImpl implements ADSercive {
         if(user == null) {
             user = new User();
             user.setUsername(name);
-            user.setUserphone(Integer.parseInt(phone));
+            user.setUserphone((phone));
             user.setUseremail(email);
             user.setUserpassword(password);
             if(sex.equals("男")) {

@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 
 /**
  * Created by SJH on 2017/11/7.
+ * @author SJH
+ * HR 控制层
  */
 @Transactional
 @RequestMapping("/hr")
@@ -52,21 +54,30 @@ public class HRHomeAction {
     private Position position;
 
 
+    /**
+     * 进入待处理招聘信息列表
+     * @param modelMap
+     * @param request
+     * @param haveRecomended 该推荐人在该岗位是否已经被推荐
+     * @param havaDelayed 招聘信息是否已经延期
+     * @param rep 执行结果返回值
+     * @return 进入待处理招聘信息列表
+     */
     @RequestMapping("/homeDetail")
     public String homeDetail(ModelMap modelMap, HttpServletRequest request, @RequestParam(required = false)String haveRecomended, @RequestParam(required = false)String havaDelayed, @RequestParam(required = false)String rep) {
         if(havaDelayed == null) {
 
         } else if(havaDelayed.equals("1")) {
-            logger.info("///////////该招聘信息确认已经延误/////");
+            logger.info("该招聘信息确认已经延误");
             modelMap.addAttribute("havaDelayed",true);
         }
         if(rep == null) {
 
         } else if(rep.equals("-1")) {
-            logger.info("//////////人才库已存在该人员");
+            logger.info("人才库已存在该人员");
             modelMap.addAttribute("rdp",-1);
         } else if(rep.equals("-2")) {
-            logger.info("//////////本公司已存在该人员");
+            logger.info("本公司已存在该人员");
             modelMap.addAttribute("rdp",-2);
         }
         positionList = hrRecruitServiceImpl.getPositionList();
@@ -78,15 +89,21 @@ public class HRHomeAction {
         if(haveRecomended == null) {
 
         } else if(haveRecomended.equals("1")) {
-            logger.info("****************************************");
             //前端提示功能（已经被推荐）
             modelMap.addAttribute("haveRecomended",true);
         }
         return "thymeleaf/hrHomeDetail";
     }
 
+    /**
+     * 进入待处理招聘信息
+     * @param modelMap
+     * @param request
+     * @param haveRecomended 该推荐人在该岗位是否被推荐
+     * @return 进入待处理招聘信息列表
+     */
     @RequestMapping("/findAllHaveNoNeeds")
-    public String findAllHaveNoNeeds(ModelMap modelMap, HttpServletRequest request, @RequestParam(required = false)String haveRecomended) {
+    public String findAllHaveNoNeeds(ModelMap modelMap, HttpServletRequest request,@RequestParam(required = false)String haveRecomended) {
         positionList = hrRecruitServiceImpl.getPositionListHaveNoNeeds();
         httpSession = request.getSession();
         job = (String) httpSession.getAttribute("job");
@@ -96,22 +113,43 @@ public class HRHomeAction {
         if(haveRecomended == null) {
 
         } else if(haveRecomended.equals("1")) {
-            logger.info("****************************************");
             //前端提示功能（已经被推荐）
             modelMap.addAttribute("haveRecomended",true);
         }
         return "thymeleaf/hrHomeDetail";
     }
+
+    /**
+     * 进入新增招聘信息界面
+     * @return 进入新增招聘信息界面
+     */
     @RequestMapping("/addJob")
     public String addJob() {
         return "thymeleaf/addJob";
     }
 
+    /**
+     * 发布招聘信息
+     * @param jobname 岗位名称
+     * @param jobcount 招聘数量
+     * @param province 工作地点所在省份
+     * @param city 工作地点所在城市
+     * @param deadtime 截止日期
+     * @param salary1 薪水最低值
+     * @param salary2 薪水最高值
+     * @param duty 岗位职责
+     * @param skill 要求技能
+     * @param message 备注
+     * @param btn 按钮
+     * @param modelMap
+     * @param request
+     * @return 返回至岗位信息列表
+     */
     @RequestMapping(value = "/recruit",method = RequestMethod.POST)
-    public String recruit(@RequestParam String jobname, @RequestParam String jobcount, @RequestParam String province, @RequestParam String city
-        , @RequestParam String deadtime, @RequestParam int salary1, @RequestParam int salary2
-                          , @RequestParam String duty, @RequestParam String skill, @RequestParam String message
-            , @RequestParam String btn, ModelMap modelMap, HttpServletRequest request
+    public String recruit(@RequestParam String jobname,@RequestParam String jobcount,@RequestParam String province,@RequestParam String city
+            ,@RequestParam String deadtime,@RequestParam int salary1,@RequestParam int salary2
+            ,@RequestParam String duty,@RequestParam String skill,@RequestParam String message
+            ,@RequestParam String btn,ModelMap modelMap,HttpServletRequest request
     ) {
         if("普通发布".equals(btn)) {
             logger.info("---------------进入普通发布--------------");
@@ -128,9 +166,9 @@ public class HRHomeAction {
                     @Override
                     public void run() {
                         for(int i = 0;i<emailList.size();i++) {
-                             mailServiceImpl.sendSimpleMail(emailList.get(i),"紧急招聘"+jobname+","+jobcount+"人","紧急招聘"+jobname
-                            +jobcount+"人，工作地点为" + province + city + ",截止日期为" + deadtime + ",薪资为" + salary1 + "-" + salary2
-                            +",职责是：" + duty + ",需要" + skill + ",备注：" + message);
+                            mailServiceImpl.sendSimpleMail(emailList.get(i),"紧急招聘"+jobname+","+jobcount+"人","紧急招聘"+jobname
+                                    +jobcount+"人，工作地点为" + province + city + ",截止日期为" + deadtime + ",薪资为" + salary1 + "-" + salary2
+                                    +",职责是：" + duty + ",需要" + skill + ",备注：" + message);
                         }
                     }
                 }).start();
@@ -144,6 +182,11 @@ public class HRHomeAction {
         return "redirect:/hr/homeDetail";
     }
 
+    /**
+     * 单个删除招聘信息
+     * @param id 招聘信息ID
+     * @return 返回至招聘信息列表
+     */
     @RequestMapping("/del/{id}")
     public String delByID(@PathVariable int id) {
         logger.info("------------删除单个招聘信息id=" + id);
@@ -151,6 +194,11 @@ public class HRHomeAction {
         return "redirect:/hr/homeDetail";
     }
 
+    /**
+     * 多选删除招聘信息
+     * @param checkedID
+     * @return 返回至招聘信息列表
+     */
     @RequestMapping("/delSelected")
     public String delSelected(@RequestParam String checkedID) {
         logger.info("-----------删除多个招聘信息-----------");
@@ -159,13 +207,18 @@ public class HRHomeAction {
         return "redirect:/hr/homeDetail";
     }
 
+    /**
+     * 岗位招聘详情
+     * @param positionID
+     * @param modelMap
+     * @return 处于待审核状态的岗位招聘详情界面
+     */
     @RequestMapping("/needToBeDoneDetail")
     public String needToBeDoneDetail(@RequestParam String positionID, ModelMap modelMap) {
         logger.info("*******/hr/needToBeDoneDetail******");
         state = 1;
         recommendedPersonArrayList = hrDealImpl.findRecommendedPersonByPosNo(Integer.parseInt(positionID));
         if(recommendedPersonArrayList == null) {
-            logger.info("******/hr/needToBeDoneDetail尚未有被推荐人选****");
             modelMap.addAttribute("zero",true);
             modelMap.addAttribute("positionNo",positionID);
             return "redirect:/hr/showRecomendedPersonByState?positionID=" + positionID + "&state=1";  //尚未有被推荐人选，前端显示
@@ -173,20 +226,26 @@ public class HRHomeAction {
         return "redirect:/hr/showRecomendedPersonByState?positionID=" + positionID + "&state=1";
     }
 
+    /**
+     * 通过该次筛选面试
+     * @param recommendedPersonID 被推荐人ID
+     * @param positionNo 招聘信息ID
+     * @return 岗位招聘信息详情
+     */
     @RequestMapping("/pass/{recommendedPersonID}/{positionNo}")
-    public String pass(@PathVariable String recommendedPersonID, @PathVariable String positionNo) {
+    public String pass(@PathVariable String recommendedPersonID,@PathVariable String positionNo) {
         hrDealImpl.pass(Integer.parseInt(recommendedPersonID),Integer.parseInt(positionNo));
         return "redirect:/hr/needToBeDoneDetail?positionID=" + positionNo;
     }
 
     @RequestMapping("/notPass/{recommendedPersonID}/{positionNo}")
-    public String notPass(@PathVariable String recommendedPersonID, @PathVariable String positionNo) {
+    public String notPass(@PathVariable String recommendedPersonID,@PathVariable String positionNo) {
         hrDealImpl.notPass(Integer.parseInt(recommendedPersonID),Integer.parseInt(positionNo));
         return "redirect:/hr/needToBeDoneDetail?positionID=" + positionNo;
     }
 
     @RequestMapping("/showRecomendedPersonByState")
-    public String showRecomendedPersonByState(@RequestParam(required = false) String positionID, @RequestParam int state, ModelMap modelMap){
+    public String showRecomendedPersonByState(@RequestParam(required = false) String positionID,@RequestParam int state,ModelMap modelMap){
         logger.info("++++++positionID:" + positionID + ",state:" + state);
         modelMap.addAttribute("index",state);
         if(positionID == null) {
@@ -209,7 +268,7 @@ public class HRHomeAction {
     }
 
     @RequestMapping("/nextBtnShowRecomendedPerson")
-    public String nextBtnShowRecomendedPerson(@RequestParam String positionID, ModelMap modelMap){
+    public String nextBtnShowRecomendedPerson(@RequestParam String positionID,ModelMap modelMap){
         logger.info("/hr/nextBtnShowRecomendedPerson:state:" + (state + 1));
         recommendedPersonArrayList = hrDealImpl.findRecommendedPersonByPosNoAndState(Integer.parseInt(positionID),++state);
         if(recommendedPersonArrayList == null) {
@@ -227,7 +286,7 @@ public class HRHomeAction {
     }
 
     @RequestMapping("/preBtnShowRecomendedPerson")
-    public String preBtnShowRecomendedPerson(@RequestParam String positionID, ModelMap modelMap){
+    public String preBtnShowRecomendedPerson(@RequestParam String positionID,ModelMap modelMap){
         logger.info("/hr/preBtnShowRecomendedPerson:state:" + (state - 1));
         recommendedPersonArrayList = hrDealImpl.findRecommendedPersonByPosNoAndState(Integer.parseInt(positionID),--state);
         if(recommendedPersonArrayList == null) {
@@ -245,16 +304,17 @@ public class HRHomeAction {
     }
 
     @RequestMapping("/lookHaveNoNeedsPosition")
-    public String lookHaveNoNeedsPosition(@RequestParam String positionID, ModelMap modelMap) {
+    public String lookHaveNoNeedsPosition(@RequestParam String positionID,ModelMap modelMap) {
         recommendedPersonArrayList = hrDealImpl.findPassedPersonByPos(Integer.parseInt(positionID));
         modelMap.addAttribute("recommendedPersonByPosNo",recommendedPersonArrayList);
         modelMap.addAttribute("positionNo",positionID);
-        modelMap.addAttribute("havaPassed",false);
+        modelMap.addAttribute("havePassed",false);
+        modelMap.addAttribute("done",true);
         return "thymeleaf/needToBeDoneDetail";
     }
 
     @RequestMapping("/findPosByPosno")
-    public String findPosByPosno(ModelMap modelMap, @RequestParam String posno) {
+    public String findPosByPosno(ModelMap modelMap,@RequestParam String posno) {
         position = hrDealImpl.findPosByPosno(Integer.parseInt(posno));
         modelMap.addAttribute("position",position);
         return "thymeleaf/followPosition";

@@ -46,12 +46,12 @@
                     <a class="tweet-touch" th:href="@{/re/getRecommendedPersonDetail(personID=${recommendedPerson.rdpno})}" href="../templates/recommendedPersonDetail.html">详细信息</a>
                 </div>
                 <div th:if="${havaPassed == false || haveOver == true || havaOver == null}">
-                    <label>
+                    <label th:unless="${done == true}">
                         <div style="float:left;">
                             <a th:href="@{/hr/notPass/{recommendedPersonID}/{positionNo}(recommendedPersonID=${recommendedPerson.rdpno},positionNo=${positionNo})}" class="button1">不通过</a>
                         </div>
                     </label>
-                    <label>
+                    <label th:unless="${done == true}">
                         <div style="float:right;">
                             <a th:href="@{/hr/pass/{recommendedPersonID}/{positionNo}(recommendedPersonID=${recommendedPerson.rdpno},positionNo=${positionNo})}" class="button2">通过</a>
                         </div>

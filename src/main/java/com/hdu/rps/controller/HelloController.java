@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Created by SJH on 2017/12/6.
  * @author SJH
+ * 测试使用
  */
 @Controller
 @RequestMapping(value = "/hello")
