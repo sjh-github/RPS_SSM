@@ -33,7 +33,6 @@
                 <div class="social-touch" >
                     <a class="tweet-touch" th:href="@{/re/getRecommendedPersonDetail(personID=${recommendedPerson.rdpno})}" href="../templates/recommendedPersonDetail.html">详细信息</a>
                 </div>
-                <h3 th:text="|display:${display},done:${done}|">111</h3>
                 <div th:if="${display == true || havaPassed == false || haveOver == true || havaOver == null}">
                     <label th:unless="${done == true}">
                         <div style="float:left;">
