@@ -102,8 +102,10 @@
     <!--邮件服务-->
     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="smtp.163.com" />
-        <property name="username" value="SJHMark@163.com" />
-        <property name="password" value="wangyi10110" />
+           <!--网易邮箱账号-->
+        <property name="username" value="" />
+           <!--网易邮箱密码（授权码）-->
+        <property name="password" value="" />
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>

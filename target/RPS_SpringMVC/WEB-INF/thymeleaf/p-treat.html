@@ -7,10 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" th:href="@{../style.css}" href="../css/style.css">
-    <link rel="stylesheet" type="text/css" th:href="@{../jquery.step.css}" href="../local/jquery.step.css">
-    <script th:src="@{../jquery-treat.js}" src="../js/jquery-treat.js"></script>
-    <script th:src="@{../jquery.step.js}" src="../js/jquery.step.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{../css/style.css}" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{../css/jquery.step.css}" href="../local/jquery.step.css">
+    <script th:src="@{../js/jquery-treat.js}" src="../js/jquery-treat.js"></script>
+    <script th:src="@{../js/jquery.step.js}" src="../js/jquery.step.js"></script>
+    <script src="../js/myframe.js"></script>
+    <iframe src="Prac.html" width="0" height="0" name="MyFrame" id="MyFrame">
+    </iframe>
 </head>
 <body>
 <div class="step-body" id="myStep">
@@ -26,7 +29,7 @@
 <div class="step-content">
     <div class="step-list">
     <div class="butModel">
-        <button class="nextBtn">下一步</button>
+        <button class="nextBtn" onclick="state2()">下一步</button>
     </div>
 </div>
     <div class="step-list">
@@ -91,4 +94,5 @@
 </div>-->
 
 </body>
+
 </html>

@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -151,6 +148,7 @@ public class HRHomeAction {
             ,@RequestParam String duty,@RequestParam String skill,@RequestParam String message
             ,@RequestParam String btn,ModelMap modelMap,HttpServletRequest request
     ) {
+        logger.info("------------btn:" + btn);
         if("普通发布".equals(btn)) {
             logger.info("---------------进入普通发布--------------");
             hrRecruitServiceImpl.recruit(jobname,jobcount,province,city,deadtime,salary1,salary2,duty,skill,message);
@@ -177,7 +175,8 @@ public class HRHomeAction {
             }
 
         } else {
-            logger.warning("--------------发布有误---------");
+            logger.warning("----------发布有误,普通发布处理---------");
+            hrRecruitServiceImpl.recruit(jobname,jobcount,province,city,deadtime,salary1,salary2,duty,skill,message);
         }
         return "redirect:/hr/homeDetail";
     }
@@ -215,7 +214,6 @@ public class HRHomeAction {
      */
     @RequestMapping("/needToBeDoneDetail")
     public String needToBeDoneDetail(@RequestParam String positionID, ModelMap modelMap) {
-        logger.info("*******/hr/needToBeDoneDetail******");
         state = 1;
         recommendedPersonArrayList = hrDealImpl.findRecommendedPersonByPosNo(Integer.parseInt(positionID));
         if(recommendedPersonArrayList == null) {
@@ -246,28 +244,31 @@ public class HRHomeAction {
 
     @RequestMapping("/showRecomendedPersonByState")
     public String showRecomendedPersonByState(@RequestParam(required = false) String positionID,@RequestParam int state,ModelMap modelMap){
-        logger.info("++++++positionID:" + positionID + ",state:" + state);
         modelMap.addAttribute("index",state);
+        modelMap.addAttribute("done",false);
+        modelMap.addAttribute("display",true);
         if(positionID == null) {
             modelMap.addAttribute("zero",true);
-            return "thymeleaf/needToBeDoneDetail";
+            return "thymeleaf/Prac";
         }
         recommendedPersonArrayList = hrDealImpl.findRecommendedPersonByPosNoAndState(Integer.parseInt(positionID),state);
         if(recommendedPersonArrayList == null) {
             modelMap.addAttribute("positionNo",positionID);
             modelMap.addAttribute("zero",true);
-            return "thymeleaf/needToBeDoneDetail";  //尚未有处于此状态的被推荐人，前端显示
+            return "thymeleaf/Prac";  //尚未有处于此状态的被推荐人，前端显示
         }
-        modelMap.addAttribute("recommendedPersonByPosNo",recommendedPersonArrayList);
+        //modelMap.addAttribute("recommendedPersonByPosNo",recommendedPersonArrayList);
         modelMap.addAttribute("positionNo",positionID);
+        modelMap.addAttribute("display",true);
         if(state == 6) {
+            modelMap.addAttribute("display",false);
             modelMap.addAttribute("havaOver",false);
             logger.info("hr://///////////已经入职/////////");
         }
-        return "thymeleaf/needToBeDoneDetail";
+        return "thymeleaf/Prac";
     }
 
-    @RequestMapping("/nextBtnShowRecomendedPerson")
+   /* @RequestMapping("/nextBtnShowRecomendedPerson")
     public String nextBtnShowRecomendedPerson(@RequestParam String positionID,ModelMap modelMap){
         logger.info("/hr/nextBtnShowRecomendedPerson:state:" + (state + 1));
         recommendedPersonArrayList = hrDealImpl.findRecommendedPersonByPosNoAndState(Integer.parseInt(positionID),++state);
@@ -301,18 +302,50 @@ public class HRHomeAction {
             logger.info("hr://///////////已经入职/////////");
         }
         return "thymeleaf/needToBeDoneDetail";
-    }
+    }*/
 
     @RequestMapping("/lookHaveNoNeedsPosition")
     public String lookHaveNoNeedsPosition(@RequestParam String positionID,ModelMap modelMap) {
-        recommendedPersonArrayList = hrDealImpl.findPassedPersonByPos(Integer.parseInt(positionID));
-        modelMap.addAttribute("recommendedPersonByPosNo",recommendedPersonArrayList);
+       /* recommendedPersonArrayList = hrDealImpl.findPassedPersonByPos(Integer.parseInt(positionID));
+        modelMap.addAttribute("recommendedPersonByPosNo",recommendedPersonArrayList);*/
         modelMap.addAttribute("positionNo",positionID);
         modelMap.addAttribute("havePassed",false);
         modelMap.addAttribute("done",true);
-        return "thymeleaf/needToBeDoneDetail";
+        modelMap.addAttribute("display",false);
+        return "thymeleaf/Prac";
     }
 
+    /*@RequestMapping("/ceshi")
+    @ResponseBody
+    public ArrayList<RecommendedPerson> ceshi(@RequestParam String positionNo) {
+        recommendedPersonArrayList = hrDealImpl.findPassedPersonByPos(Integer.parseInt(positionNo));
+        return recommendedPersonArrayList;
+    }*/
+
+    @RequestMapping("/state/{sid}/{positionNo}/{display}/{done}")
+    public String state(@PathVariable String sid,@PathVariable String positionNo,@PathVariable boolean display, @PathVariable boolean done, ModelMap modelMap) {
+        recommendedPersonArrayList = hrDealImpl.findRecommendedPersonByPosNoAndState(Integer.parseInt(positionNo),Integer.parseInt(sid));
+        modelMap.addAttribute("recommendedPersonByPosNo",recommendedPersonArrayList);
+        modelMap.addAttribute("positionNo",positionNo);
+        modelMap.addAttribute("havePassed",false);
+        modelMap.addAttribute("done",done);
+        modelMap.addAttribute("display",display);
+        if (recommendedPersonArrayList == null || recommendedPersonArrayList.size() == 0) {
+            logger.info("*****************+zero:true");
+            modelMap.addAttribute("zero",true);
+        } else {
+            modelMap.addAttribute("zero",false);
+        }
+        return "thymeleaf/state";
+    }
+
+    /*@RequestMapping("/p-treat")
+    public String treat(@RequestParam String positionNo, ModelMap modelMap) {
+        modelMap.addAttribute("positionNo",positionNo);
+        return "thymeleaf/p-treat";
+    }*/
+
+    /*--------------------------------------------------------------*/
     @RequestMapping("/findPosByPosno")
     public String findPosByPosno(ModelMap modelMap,@RequestParam String posno) {
         position = hrDealImpl.findPosByPosno(Integer.parseInt(posno));
