@@ -13,7 +13,7 @@
 </head>
 <body>
 <div id="back">
-<form action="#" th:action="@{/hr/recruit}" method="post" class="elegant-aero">
+<form action="#" th:action="@{/hr/recruit}" method="get" class="elegant-aero">
     <h1>发布招聘
         <span>请填写您的招聘需求</span>
     </h1>
@@ -258,7 +258,8 @@
     function setSalary2() {
         var salary1Value = document.getElementById("xinzi1").value;
         var salary2 = document.getElementById("xinzi2");
-        salary2[(salary1Value/1000)].selected = true;
+        var aaa = salary1Value/1000;
+        salary2[aaa].selected = true;
     }
 </script>
 </div>

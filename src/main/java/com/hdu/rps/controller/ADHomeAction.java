@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * Created by SJH on 2017/11/23.
- * @author SJH
+ * Created by DJX on 2017/11/23.
+ * @author DJX
  * 管理员控制层
  */
 @Transactional
@@ -311,7 +311,7 @@ public class ADHomeAction {
     public String scoreRuleManage(ModelMap modelMap) {
         scoreRule = adServiceImpl.selectScoreRule();
         modelMap.addAttribute("scoreRule",scoreRule);
-        return "thymeleaf/scoreRuleManage";
+        return "jsp/scoreRuleManage";
     }
 
     /**

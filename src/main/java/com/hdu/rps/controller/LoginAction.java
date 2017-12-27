@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Created by SJH on 2017/11/5.
+ * @author SJH
  */
 @Controller
 @RequestMapping(value = "/login")
@@ -27,12 +28,23 @@ public class LoginAction {
     @Autowired
     private LoginServiceImpl loginServiceImpl;
 
+    /**
+     * 首页界面映射
+     * @return 首页界面
+     */
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public String index() {
         logger.info("---------进入首页-----------");
         return "thymeleaf/index";
     }
 
+    /**
+     * 判断登陆人员身份
+     * @param btn 按钮值
+     * @param modelMap
+     * @param result 查询结果
+     * @return Home/首页界面
+     */
     @RequestMapping(value = "/selectLogin",method = RequestMethod.GET)
     public String login(@RequestParam String btn, ModelMap modelMap,@RequestParam(required = false)String result) {
         modelMap.addAttribute("result",result);
@@ -52,6 +64,15 @@ public class LoginAction {
         return "thymeleaf/login";
     }
 
+    /**
+     * HR登陆
+     * @param email 邮箱
+     * @param password 密码
+     * @param modelMap
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/hr",method = RequestMethod.POST)
     private String hrLogin(@RequestParam(required = false) String email, @RequestParam(required = false) String password, ModelMap modelMap, HttpServletRequest request
             , HttpServletResponse response) {
@@ -84,6 +105,15 @@ public class LoginAction {
         }
     }
 
+    /**
+     * 普通员工登陆
+     * @param email 邮箱
+     * @param password 密码
+     * @param modelMap
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/re",method = RequestMethod.POST)
     private String reLogin(@RequestParam String email, @RequestParam String password,ModelMap modelMap,HttpServletRequest request,HttpServletResponse response) {
         response.setHeader("Cache-Control","no-cache"); //不对页面进行缓存，再次访问时将从服务器重新获取最新版本
@@ -115,6 +145,15 @@ public class LoginAction {
         }
     }
 
+    /**
+     * 管理员登陆
+     * @param email 邮箱
+     * @param password 密码
+     * @param modelMap
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/ad",method = RequestMethod.POST)
     private String adLogin(@RequestParam String email, @RequestParam String password,ModelMap modelMap,HttpServletRequest request,HttpServletResponse response) {
         response.setHeader("Cache-Control","no-cache"); //不对页面进行缓存，再次访问时将从服务器重新获取最新版本

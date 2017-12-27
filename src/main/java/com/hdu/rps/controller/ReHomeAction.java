@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 /**
  * Created by SJH on 2017/11/16.
+ * @author SJH
  */
 @Controller
 @RequestMapping("/re")
@@ -47,6 +48,12 @@ public class ReHomeAction {
     @Autowired
     private CountsServiceImpl countsServiceImpl;
 
+    /**
+     * 点击推荐按钮
+     * @param modelMap
+     * @param positionID 招聘信息ID
+     * @return
+     */
     @RequestMapping("/recommendBtn")
     public String recommendBtn(ModelMap modelMap, @RequestParam String positionID) {
         logger.info("---------检查是否该职位已经误期-------");
@@ -66,12 +73,22 @@ public class ReHomeAction {
         }
     }
 
+    /**
+     * 加入人才库按钮
+     * @return
+     */
     @RequestMapping("/addToReposHome")
     public String addToReposHome() {
         logger.info("-------进入新增人才库页面-------");
         return "thymeleaf/addToReposHome";
     }
 
+    /**
+     * 进入推荐跟踪界面
+     * @param httpServletRequest
+     * @param modelMap
+     * @return
+     */
     @RequestMapping("/recommendFollow")
     public String recommendFollow(HttpServletRequest httpServletRequest, ModelMap modelMap) {
         logger.info("-------进入推荐跟踪页面----");
@@ -83,6 +100,11 @@ public class ReHomeAction {
         return "thymeleaf/recommendFollow";
     }
 
+    /**
+     * 进入积分排行榜界面
+     * @param modelMap
+     * @return
+     */
     @RequestMapping("/scoreBoard")
     public String scoreBoard(ModelMap modelMap) {
         logger.info("----进入积分排行榜页面----");
@@ -91,6 +113,27 @@ public class ReHomeAction {
         return "thymeleaf/scoreBoard";
     }
 
+    /**
+     * 导入人才库信息
+     * @param name 姓名
+     * @param sex 性别
+     * @param birthdate 出生日期
+     * @param minzu 民族
+     * @param mianmao 政治面貌
+     * @param province 籍贯省份
+     * @param city 籍贯城市
+     * @param telphone 手机号
+     * @param email 邮箱
+     * @param address 现住址
+     * @param school 毕业院校
+     * @param major 专业
+     * @param xueli 学历
+     * @param computer 计算机水平
+     * @param english 英语水平
+     * @param interest 兴趣爱好
+     * @param file 照片信息
+     * @return
+     */
     @RequestMapping(value = "/addToRepos",method = RequestMethod.POST)
     public String addToRepos(@RequestParam String name, @RequestParam String sex, @RequestParam String birthdate,
                              @RequestParam String minzu, @RequestParam String mianmao, @RequestParam String province,
@@ -110,6 +153,11 @@ public class ReHomeAction {
         return "redirect:/hr/homeDetail?rep=1";
     }
 
+    /**
+     * 获得照片信息
+     * @param httpServletResponse
+     * @param userPhoto 照片名
+     */
     @RequestMapping("/getRecommendedPersonPhoto")
     public void getRecommendedPersonPhoto(HttpServletResponse httpServletResponse, @RequestParam String userPhoto) {
         logger.info("-----------userPhoto:" + userPhoto);
@@ -133,6 +181,12 @@ public class ReHomeAction {
         }
     }
 
+    /**
+     * 查询被推荐人详细信息
+     * @param personID 被推荐人ID
+     * @param modelMap
+     * @return
+     */
     @RequestMapping("/getRecommendedPersonDetail")
     public String getRecommendedPersonDetail(@RequestParam String personID, ModelMap modelMap) {
         logger.info("-----查询ID为" + personID + "的被推荐人详情信息");
@@ -141,6 +195,13 @@ public class ReHomeAction {
         return "thymeleaf/recommendedPersonDetail";
     }
 
+    /**
+     * 对岗位信息进行推荐
+     * @param positionID 岗位ID
+     * @param recommendedPersonID 被推荐人ID
+     * @param httpServletRequest
+     * @return
+     */
     @RequestMapping("/recommend/{positionID}/{recommendedPersonID}")
     public String recommend(@PathVariable String positionID, @PathVariable String recommendedPersonID, HttpServletRequest httpServletRequest) {
         httpSession = httpServletRequest.getSession();

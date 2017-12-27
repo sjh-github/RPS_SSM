@@ -8,10 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>测试</title>
+    <title>欢迎</title>
 </head>
 <body>
-<h3>测试使用</h3>
-<a href="/hello/login">sjh</a>
+<h3>欢迎</h3>
+<a href="/hello/login">HR人才管理系统</a>
 </body>
 </html>
